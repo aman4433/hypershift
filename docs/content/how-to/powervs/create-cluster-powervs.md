@@ -30,7 +30,7 @@ Use the `hypershift create cluster powervs` command:
         --vpc-region $VPC_REGION \
         --base-domain $BASEDOMAIN \
         --resource-group $RESOURCE_GROUP \
-        --release-image $RELEASE_IMAGE
+        --release-image $RELEASE_IMAGE \
         --pull-secret $PULL_SECRET \
         --node-pool-replicas=2
 
@@ -48,8 +48,19 @@ where
 
 Running this command will create [infra](create-infra-separately.md) and manifests for the hosted cluster and deploys it.
 
-## Utilizing Power Edge Router(PER) via Transit Gateway
-To use IBM Cloud's PER feature via transit gateway, need to pass `--use-power-edge-router` and `--transit-gateway-location $TRANSIT_GATEWAY_LOCATION` flags to create cluster command like below.
+## Using Transit Gateway (Default Networking Mode)
+
+Update Overview
+
+Previously, IBM Cloud's PowerVS clusters used cloud connection as the default networking mode, and users needed to provide the --power-edge-router flag to enable transit gateway. IBM has since removed support for cloud connection, making transit gateway the default networking mode for PowerVS clusters. As a result:
+
+Transit Gateway is now default: No additional flag is required for enabling transit gateway.
+
+Power Edge Router flag removed: The --power-edge-router flag has been removed as transit gateway is always enabled by default.
+
+Updated Command
+
+To create a cluster with the default transit gateway networking mode:
 
     TRANSIT_GATEWAY_LOCATION=us-south
     ./bin/hypershift create cluster powervs \
@@ -59,10 +70,9 @@ To use IBM Cloud's PER feature via transit gateway, need to pass `--use-power-ed
         --vpc-region $VPC_REGION \
         --base-domain $BASEDOMAIN \
         --resource-group $RESOURCE_GROUP \
-        --release-image $RELEASE_IMAGE
+        --release-image $RELEASE_IMAGE \
         --pull-secret $PULL_SECRET \
         --node-pool-replicas=2 \
-        --use-power-edge-router \
         --transit-gateway-location $TRANSIT_GATEWAY_LOCATION
 
 Read [here](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-per) to know more about PER and data centers where its deployed currently.
